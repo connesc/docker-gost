@@ -1,10 +1,9 @@
-FROM golang:1.12-alpine3.9 AS build
-RUN apk add --no-cache git
-WORKDIR /usr/src/gost
-ARG GOST_VERSION=2.8.1
-RUN wget -O - "https://github.com/ginuerzh/gost/archive/v${GOST_VERSION}.tar.gz" | tar xz
-WORKDIR gost-${GOST_VERSION}
-RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -ldflags '-s -w' -o /gost ./cmd/gost
+FROM alpine:3.10 AS build
+RUN apk add --no-cache curl
+ARG GOST_VERSION=2.8.2
+ARG PLATFORM=linux-amd64
+RUN curl -L "https://github.com/ginuerzh/gost/releases/download/v${GOST_VERSION}/gost-${PLATFORM}-${GOST_VERSION}.gz" | zcat > /gost \
+	&& chmod +x /gost
 
 FROM scratch
 COPY --from=build /gost /
