@@ -1,6 +1,6 @@
 FROM alpine:3.10 AS build
 RUN apk add --no-cache curl
-ARG GOST_VERSION=2.10.1
+ARG GOST_VERSION=2.11.0
 ARG PLATFORM=linux-armv8
 RUN curl -L "https://github.com/ginuerzh/gost/releases/download/v${GOST_VERSION}/gost-${PLATFORM}-${GOST_VERSION}.gz" | zcat > /gost \
 	&& chmod +x /gost
